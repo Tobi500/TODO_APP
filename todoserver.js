@@ -36,8 +36,38 @@ app.get("/todo/:id",(req,res) => {
     res.status(404).json({err:"todo not available"})}
 
     res.json(todo);
+})
+
+app.delete("/todo/:id", (req, res) => 
+    {
+    const id = parseInt(req.params.id);
+
+    const index = todos.findIndex(todo => todo.id === id);
+
+    const deleteTodo = todos.splice(index, 1)[0];
+
     
-    
+    res.json({message:"todo deleted", todo:"deletedTodo"});
+
+    if(!deleteTodo) {
+        res.status(404).json({error:"todo not found"});git
+    }
+   
+});
+
+
+
+app.patch("/todo/:id", (req,res) => {
+    const id = parseInt(req.params.id);
+    const todo = todos.find(todo => todo.id === id);
+    const {task,title,description} = req.body;
+    if(task) todo.task = task;
+    if(title) todo.title = title;
+    if(description) todo.description = description;
+
+    res.json({message:"todo updated", todo});
+
+
 })
 
 
